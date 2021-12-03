@@ -1,11 +1,28 @@
 import { useParams } from 'react-router-dom';
 import { DisplayItem, DisplayItemList } from '../components/DisplayItem';
+import {
+  useQuery,
+  gql
+} from "@apollo/client"
+
+const BOOK = gql`query getBook($id: ID!) {
+  book:getBook(id: $id) {
+    name
+    isFavorite
+    numberOfFavorites
+    characters {
+      id
+      name
+    }
+  }
+}`
 
 export const Book = () => {
   let { id } = useParams();
-  const loading = true; // TODO query
-  const data = null; // TODO query
 
+  const { loading, error, data } = useQuery(BOOK, {
+    variables: { id },
+  });
   const addToFavorite = () => {}; // TODO mutation
   const removeFromFavorite = () => {}; // TODO mutation
 

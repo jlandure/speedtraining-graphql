@@ -16,7 +16,7 @@ const urlIdsToType = (urlIds, type, dataSources) => {
 
 const resolvers = {
     Query: {
-      getBooks(_, {dataSources}) {
+      getBooks(_, __, {dataSources}) {
         return dataSources.sample.getAllByTypes(booksType)
       },
       getBook(_, {id}, {dataSources}) {
@@ -30,14 +30,28 @@ const resolvers = {
     }
     },
     Book: {
+      id(book) {
+        return getIdFromUrl(book.url);
+      },
       characters(book, _, {dataSources}) {
         return urlIdsToType(book.characters, charactersType, dataSources)
       },
       povCharacters(book, _, {dataSources}) {
         return urlIdsToType(book.characters, charactersType, dataSources)
-      }
+      },
+      async numberOfFavorites(book, _, {dataSources}) {
+        const result = await dataSources.favorite.getNumberOfFavorites(book.url);
+        return result
+      },
+      async isFavorite(book, _, {dataSources}) {
+        const result = await dataSources.favorite.isFavorite(book.url);
+        return Boolean(result)
+      },
     },
     Character: {
+      id(character) {
+        return getIdFromUrl(character.url);
+      },
       spouse(character, _, {dataSources}) {
         return urlIdsToType(character.spouse, charactersType, dataSources)
       },
@@ -49,9 +63,20 @@ const resolvers = {
       },
       povBooks(character, _, {dataSources}) {
         return urlIdsToType(character.povBooks, booksType, dataSources);
-      }
+      },
+      async numberOfFavorites(character, _, {dataSources}) {
+        const result = await dataSources.favorite.getNumberOfFavorites(character.url);
+        return result
+      },
+      async isFavorite(character, _, {dataSources}) {
+        const result = await dataSources.favorite.isFavorite(character.url);
+        return Boolean(result)
+      },
     },
     House: {
+      id(house) {
+        return getIdFromUrl(house.url);
+      },
       founder(house, _, {dataSources}) {
         return urlIdsToType(house.founder, charactersType, dataSources)
       },
@@ -67,10 +92,23 @@ const resolvers = {
       cadetBranches(house, _, {dataSources}) {
         return urlIdsToType(house.cadetBranches, housesType, dataSources)
       },
+      async numberOfFavorites(house, _, {dataSources}) {
+        const result = await dataSources.favorite.getNumberOfFavorites(house.url);
+        return result
+      },
+      async isFavorite(house, _, {dataSources}) {
+        const result = await dataSources.favorite.isFavorite(house.url);
+        return Boolean(result)
+      }
     },
     Mutation: {
-      addFavorite(_, url, {dataSources}) {
-        return Boolean(dataSources.favorite.addFavorite(url));
+      async addFavorite(_, {url}, {dataSources}) {
+        const result = await dataSources.favorite.addFavorite(url);
+        return Boolean(result)
+      },
+      async removeFavorite(_, {url}, {dataSources}) {
+        const result = await  dataSources.favorite.removeFavorite(url);
+        return Boolean(result)
       }
     }
   };

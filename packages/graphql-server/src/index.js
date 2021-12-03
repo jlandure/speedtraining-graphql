@@ -19,7 +19,7 @@ const server = new ApolloServer({
     sample: new MySampleDatasource(),
     favorite: new MyFavoriteDatasource()
   }),
-  context: () => ({token: "julien"})
+  context: () => ({token: "ju"})
 });
 
 server.listen().then(({ url }) => {

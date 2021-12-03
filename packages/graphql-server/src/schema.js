@@ -1,6 +1,12 @@
 import {gql} from "apollo-server";
 
 const typeDefs = gql`
+interface Item {
+  id: ID
+  url: String
+  name: String
+}
+
 type Query {
     getBooks: [Book]!
     getBook(id: ID!): Book!
@@ -8,7 +14,8 @@ type Query {
     getHouse(id: ID!): House!
 }
 
-type Book {
+type Book implements Item {
+    id: ID
     url: String
     name: String
     isbn: String
@@ -20,9 +27,12 @@ type Book {
     released: String
     characters: [Character]
     povCharacters: [Character]
+    numberOfFavorites: Int
+    isFavorite: Boolean
   }
   
-  type Character {
+  type Character implements Item {
+    id: ID
     url: String
     name: String
     gender: String
@@ -37,9 +47,12 @@ type Book {
     povBooks: [Book]
     tvSeries: [String]
     playedBy: [String]
+    numberOfFavorites: Int
+    isFavorite: Boolean
   }
   
-  type House {
+  type House implements Item {
+    id: ID
     url: String
     name: String
     region: String
@@ -56,10 +69,13 @@ type Book {
     ancestralWeapons: [String]
     cadetBranches: [House]
     swornMembers: [Character]
+    numberOfFavorites: Int
+    isFavorite: Boolean
   }
 
   type Mutation {
     addFavorite(url: String!): Boolean
+    removeFavorite(url: String!): Boolean
   }
 `;
   export {typeDefs as default}
