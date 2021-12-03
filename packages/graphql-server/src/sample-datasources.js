@@ -3,11 +3,11 @@ import {RESTDataSource} from "apollo-datasource-rest"
 export class MySampteDatasource extends RESTDataSource {
   constructor() {
     super();
-    this.baseURL = 'https://mapi.com/';
+    this.baseURL = 'http://34.76.108.27/api/';
   }
 
-  async getById(id) {
-    return this.get(`my-entity/${id}`);
+  async getById(id, type) {
+    return this.get(`${type}/${id}`);
   }
 
   // force 1 day ttl for all requests
