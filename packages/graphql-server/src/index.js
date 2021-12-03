@@ -1,7 +1,8 @@
 import {ApolloServer} from "apollo-server";
 import {BaseRedisCache} from 'apollo-server-cache-redis'
 import Redis from 'ioredis'
-import {MySampteDatasource} from "./sample-datasources.js"
+import {MySampleDatasource} from "./sample-datasources.js"
+import {MyFavoriteDatasource} from "./favorite-datasources.js"
 
 import typeDefs from "./schema.js"
 import resolvers from "./resolvers.js"
@@ -15,8 +16,10 @@ const server = new ApolloServer({
   //   }),
   // }),
   dataSources: () => ({
-    sample: new MySampteDatasource()
+    sample: new MySampleDatasource(),
+    favorite: new MyFavoriteDatasource()
   }),
+  context: () => ({token: "julien"})
 });
 
 server.listen().then(({ url }) => {

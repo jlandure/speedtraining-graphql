@@ -57,5 +57,9 @@ type Book {
     cadetBranches: [House]
     swornMembers: [Character]
   }
+
+  type Mutation {
+    addFavorite(url: String!): Boolean
+  }
 `;
   export {typeDefs as default}

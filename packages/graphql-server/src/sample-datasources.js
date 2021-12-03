@@ -1,6 +1,6 @@
 import {RESTDataSource} from "apollo-datasource-rest"
 
-export class MySampteDatasource extends RESTDataSource {
+export class MySampleDatasource extends RESTDataSource {
   constructor() {
     super();
     this.baseURL = 'http://34.76.108.27/api/';
@@ -8,6 +8,15 @@ export class MySampteDatasource extends RESTDataSource {
 
   async getById(id, type) {
     return this.get(`${type}/${id}`);
+  }
+
+  async getAllByTypes(type) {
+    return this.get(`${type}/`);
+  }
+
+  async getAllItemsById(ids, type) {
+    console.log(`⚡️ /${type}?ids=${ids.join? ids.join("|") : ids}`)
+    return this.get(`/${type}?ids=${ids.join? ids.join("|") : ids}`);
   }
 
   // force 1 day ttl for all requests
